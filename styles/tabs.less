@@ -18,9 +18,11 @@
 }
 
 .tab-bar {
+  box-sizing: border-box;
   height: @ui-tab-height;
-  box-shadow: inset 0 -1px 0 @tab-border-color;
   background: white;
+  box-shadow: inset 0 -4px 0 rgba(0,0,0,0.05);
+  border-bottom: 1px solid @tab-border-color;
   overflow-x: auto;
   overflow-y: hidden;
   border-radius: 0;
@@ -43,34 +45,30 @@
     line-height: @ui-tab-height;
     padding: 0;
     margin: 0;
+    border-width: 0 1px 1px 0;
+    border-style: solid;
+    border-color: @tab-border-color;
+    transition: max-width cubic-bezier(.55,0,.1,1) 0.2s;
+    background: white;
+    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.05);
 
+    &:hover {
+      cursor: pointer;
+    }
 
-    // Background ----------------------
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: inherit;
-      border-width: 0 1px 0 1px;
+    &:first-child.active {
+      border-left: 1px;
       border-style: solid;
       border-color: @tab-border-color;
-      background-color: @tab-background-color-active;
-      background-image: linear-gradient( hsla(0,0%,100,.02), hsla(0,0%,100,0) );
-      background-clip: content-box;
-      box-shadow: inset 0 1px 1px hsla(0,0%,100,.06);
-      transition: opacity .16s;
-      opacity: 0;
     }
-    &[data-type$="Editor"]::after {
-      background-color: @tab-background-color-editor;
-      border-bottom-color: @tab-background-color-editor;
-    }
-    &.active::after {
-      opacity: 1;
-      transition: none;
+    &.active {
+      background-color: @syntax-background-color;
+      border-bottom: 0;
+      box-shadow: none;
+      ::after {
+        opacity: 1;
+        transition: none;
+      }
     }
 
 
@@ -80,39 +78,83 @@
       position: relative;
       z-index: 1;
       text-align: center;
-      padding: 0 @tab-padding;
+      padding: 0 15px;
       text-overflow: clip;
-      -webkit-mask: linear-gradient( to left, hsla(0,0%,0%,0), hsla(0,0%,0%,1) 1em) no-repeat;
+      // -webkit-mask: linear-gradient( to left, hsla(0,0%,0%,0), hsla(0,0%,0%,1) 1em) no-repeat;
+      overflow: hidden;
+
+      &:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate3d(-20px,-20px,0);
+        display: block;
+        content: '';
+        width: 0;
+        height: 0;
+        border-width: 20px 20px 0 0;
+        border-style: solid;
+        border-color: @text-color-info transparent transparent transparent;
+      }
     }
     &:hover .title {
       -webkit-mask-position: -@modified-icon-width 0;
     }
+    &.active .title {
+      padding: 0 15px;
+    }
 
 
     // Close icon ----------------------
+    .close-icon,
+    &.modified .close-icon,
+    &.modified:not(:hover) .close-icon {
+      position: absolute;
+      display: block;
+      content: 'a';
+      right: 5px;
+      color: red;
+      background: rgba(0,0,0,0.5);
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      margin-top: -8px;
+      border-radius: 50%;
+      z-index: 1;
+      transform: scale(0) rotate(-180deg);
+      opacity: 0;
+      transition: all cubic-bezier(.55,0,.1,1) 0.2s;
+      border: 0;
+      &::before {
+        color: white;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        text-align: center;
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        transition: all cubic-bezier(.55,0,.1,1) 0.2s;
+      }
+    }
 
-    .close-icon {
-      display: none;
+    &:hover .close-icon,
+    &.modified:hover .close-icon {
+      transform: scale(1) rotate(0);
+      opacity: 1;
+      &:hover {
+        background: black;
+      }
     }
   }
-
-
-  // Tab sizing ----------------------
-
-  .tab,
-  .tab.active {
-    flex: 1;
-  }
-
 
   // keep tabs same size when active ----------------------
 
   .tab,
   .tab.active {
+    flex: none;
     padding-right: 0;
-    .title {
-      padding: 0;
-    }
   }
 
 
@@ -128,63 +170,28 @@
   // Tab seperator ----------------------
 
   .tab {
-    border-width: 0 0 0 1px;
-    border-image: linear-gradient(@tab-bar-background-color, @base-border-color 1em) 0 0 0 1 stretch;
-    &:first-child {
-      border-width: 0;
-    }
+    // border-width: 0 0 0 1px;
+    // border-image: linear-gradient(@tab-bar-background-color, @base-border-color 1em) 0 0 0 1 stretch;
+    // &:first-child {
+    //   border-width: 0;
+    // }
   }
   .tab.active,
   .tab.active + .tab {
-    border-image: linear-gradient(transparent, transparent) 0 0 0 1 stretch;
+    // border-image: linear-gradient(transparent, transparent) 0 0 0 1 stretch;
   }
 
 
   // Modified ----------------------
-  .tab {
-    .title {
-      overflow: hidden;
-      &::before {
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform: translate3d(-20px,-20px,0);
-        display: block;
-        content: '';
-        width: 0;
-        height: 0;
-        border-width: 20px 20px 0 0;
-        border-style: solid;
-        border-color: @text-color-info transparent transparent transparent;
-      }
-    }
-  }
-
   .tab.modified {
     .title {
       &::before {
         -webkit-animation: showModifiedLabel 0.2s forwards;
       }
     }
-    /* .close-icon {
-      color: @text-color-info;
-      border: none;
-      border-bottom: @tab-border-size solid transparent;
+    .close-icon {
+      color: inherit;
     }
-    &:not(:hover) .close-icon {
-      right: 0;
-      top: 0;
-      width: initial;
-      height: @ui-tab-height;
-      border: none;
-      border-bottom: @tab-border-size solid transparent;
-      border-radius: 0;
-      transform: scale(1);
-      &::before {
-        content: "f052";
-        display: inline-block;
-      }
-    } */
   }
 
 

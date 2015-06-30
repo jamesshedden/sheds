@@ -1,18 +1,22 @@
 .tooltip {
   white-space: nowrap;
-  font-size: @ui-size*1.15;
+  font-size: 12px;
+  font-family: @font-family-monospace;
+  opacity: 0;
+  transform: scale(0.85);
 
   &.in {
     opacity: 1;
-    transition: opacity .12s ease-out;
+    transform: scale(1);
+    transition: transform cubic-bezier(.55,0,.1,1) 0.2s, opacity cubic-bezier(.55,0,.1,1) 0.2s;
   }
 
   .tooltip-inner {
     line-height: 1;
     padding: @ui-padding*.5 @ui-padding*.65;
     border-radius: @component-border-radius;
-    background-color: @tooltip-background-color;
-    color: @tooltip-text-color;
+    background-color: black;
+    color: white;
     white-space: nowrap;
     max-width: none;
   }
@@ -28,27 +32,27 @@
   }
 
   &.top .tooltip-arrow {
-    border-top-color: @tooltip-background-color;
+    border-top-color: black;
   }
   &.top-left .tooltip-arrow {
-    border-top-color: @tooltip-background-color;
+    border-top-color: black;
   }
   &.top-right .tooltip-arrow {
-    border-top-color: @tooltip-background-color;
+    border-top-color: black;
   }
   &.right .tooltip-arrow {
-    border-right-color: @tooltip-background-color;
+    border-right-color: black;
   }
   &.left .tooltip-arrow {
-    border-left-color: @tooltip-background-color;
+    border-left-color: black;
   }
   &.bottom .tooltip-arrow {
-    border-bottom-color: @tooltip-background-color;
+    border-bottom-color: black;
   }
   &.bottom-left .tooltip-arrow {
-    border-bottom-color: @tooltip-background-color;
+    border-bottom-color: black;
   }
   &.bottom-right .tooltip-arrow {
-    border-bottom-color: @tooltip-background-color;
+    border-bottom-color: black;
   }
 }
