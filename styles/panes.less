@@ -4,9 +4,8 @@ atom-pane-container {
     position: relative;
 
     .item-views {
-      border: 1px solid @pane-item-border-color;
-      border-top: 0;
-      border-right: 0;
+      border: 0;
+      border-bottom: 1px solid @pane-item-border-color;
     }
   }
 
@@ -18,5 +17,16 @@ atom-pane-container {
   atom-pane-axis.vertical > atom-pane-resize-handle {
     height: @ui-padding-pane;
     margin-top: 0;
+  }
+}
+
+.project-find,
+.find-and-replace,
+.fuzzy-finder,
+.modal {
+  ::shadow {
+    .scroll-view {
+      padding-top: 0;
+    }
   }
 }

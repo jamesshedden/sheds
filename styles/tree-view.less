@@ -4,21 +4,60 @@
   font-size: @ui-size;
   background: white;
   font-family: @font-family-monospace;
+  padding: 0;
+  border-right: 1px solid #CCC;
+
+  .list-item:hover {
+    cursor: pointer;
+  }
 
   .project-root.project-root {
-    padding-top: @ui-padding-pane;
     &:before {
-      height: @ui-tab-height;
-      background-clip: padding-box;
+      display: none;
     }
     & > .header .name {
       line-height: @ui-tab-height;
     }
   }
 
-  .selected:before {
-    background: @background-color-highlight;
+  .project-root {
+    // First instance is the Project folder title
+    .header.list-item {
+      box-sizing: border-box;
+      background: #EEE;
+      height: @ui-tab-height;
+      line-height: @ui-tab-height;
+      box-shadow: inset 0 -4px 0 #DDD;
+      border-bottom: 1px solid #CCC;
+      position: relative;
+      color: black;
+
+      &:before {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        margin-top: -8px;
+      }
+
+      .icon-repo {
+        padding-left: 15px;
+      }
+    }
+
+    // Other instances appear in the following list
+    .entries .header.list-item {
+      background: white;
+      border: 0;
+      box-shadow: none;
+      line-height: @tree-view-height;
+      height: @tree-view-height;
+      color: inherit;
+    }
   }
+}
+
+.list-tree.has-collapsable-children .list-nested-item.collapsed > .list-item::before {
+  left: auto;
 }
 
 .theme-one-dark-ui .tree-view .project-root.project-root::before {
@@ -61,19 +100,20 @@
 // Active tree-view marker --------------
 
 .tree-view::before {
-  content: "";
-  position: fixed;
-  pointer-events: none;
-  z-index: 1;
-  top: @ui-padding-pane;
-  left: 0;
-  height: @ui-tab-height;
-  bottom: 0;
-  width: 2px;
-  background: @base-accent-color;
-  opacity: 0;
-  transform: scaleY(0);
-  transition: opacity .16s, transform .16s cubic-bezier(.80, 0, .90, .53);
+  // display: none
+  // content: "";
+  // position: fixed;
+  // pointer-events: none;
+  // z-index: 1;
+  // top: @ui-padding-pane;
+  // left: 0;
+  // height: @ui-tab-height;
+  // bottom: 0;
+  // width: 2px;
+  // background: @base-accent-color;
+  // opacity: 0;
+  // transform: scaleY(0);
+  // transition: opacity .16s, transform .16s cubic-bezier(.80, 0, .90, .53);
 }
 
 [data-show-on-right-side="true"] .tree-view::before {
@@ -85,4 +125,87 @@
   opacity: 1;
   transform: scaleY(1);
   transition: opacity .16s, transform .32s cubic-bezier(0,.6,.2,1);
+}
+
+.tree-view .project-root .entries .header.list-item {
+  // height: 30px;
+  // line-height: 30px;
+  // border-bottom: 1px solid @tab-border-color;
+}
+
+.list-tree .list-nested-item > .list-tree > li {
+  // height: 30px;
+  // line-height: 30px;
+  // border-bottom: 1px solid @tab-border-color;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.list-tree.has-collapsable-children .list-nested-item > .list-tree > li, .list-tree.has-collapsable-children .list-nested-item > .list-group > li {
+  padding-left: 0;
+  margin-left: 15px;
+  color: @gray;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &:hover {
+    color: black;
+  }
+
+  .list-item,
+  &.file.entry {
+    border-bottom: 1px solid #CCC;
+    height: 30px;
+    line-height: 30px;
+    &:last-child {
+      border-bottom: 0;
+    }
+    &:hover {
+      border-color: black;
+    }
+  }
+
+  &.expanded {
+    color: @gray !important;
+    border-bottom: 1px solid #CCC;
+    .list-item {
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+    &:hover {
+      color: black !important;
+    }
+  }
+
+  &.selected {
+    color: black;
+    &:before {
+      display: none;
+    }
+    &:hover {
+      color: black;
+    }
+  }
+
+  &.collapsed {
+    color: @gray;
+    &:hover {
+      color: black;
+    }
+  }
+}
+
+.expanded .header.list-item {
+  border-bottom: 1px solid #CCC;
+}
+
+.list-tree li.list-nested-item > .list-item {
+  color: @gray;
+}
+
+.list-tree li.list-nested-item.selected > .list-item {
+  color: black;
 }
